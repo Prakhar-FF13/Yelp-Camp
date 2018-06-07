@@ -1,0 +1,12 @@
+.img-thumbnail {
+  width:100%;
+  padding:0px;
+}
+
+.img-thumbnail img{
+  width:100%;
+}
+
+.figure-caption {
+  padding:9px;
+}
