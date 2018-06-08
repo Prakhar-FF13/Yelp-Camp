@@ -1,27 +1,31 @@
-var express = require("express"),
-app 		    = express(),
-bodyParser  = require("body-parser"),
-mongoose    = require("mongoose"),
-Campground  = require("./models/campground"),
-seedDB      = require("./seeds"),
-Comment     = require("./models/comment");
+var express    = require("express"),
+app 		       = express(),
+bodyParser     = require("body-parser"),
+mongoose       = require("mongoose"),
+passport       = require("passport"),
+LocalStrategy  = require("passport-local"),
+Campground     = require("./models/campground"),
+User           = require("./models/user"),
+seedDB         = require("./seeds"),
+Comment        = require("./models/comment");
 
 seedDB();
 
 mongoose.connect("mongodb://localhost/yelp_camp");
-
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
 
-/*Campground.create({name: "Salmon Creek",
-	image: "https://farm9.staticflickr.com/8577/16263386718_c019b13f77.jpg",
-	description: "This place is quite famous for camping as it is close to nature, river sounds make it more elegant"});
-Campground.create({name: "Granite Hill",
-	image: "https://farm2.staticflickr.com/1363/1342367857_2fd12531e7.jpg",
-	description: "This place is famous for its beautiful granite rocks. A lot of people always gather here to enjoy the starry sky."});
-Campground.create({name: "Mountain Goat's Rest", image: "https://farm9.staticflickr.com/8309/7968772438_3e0935fab7.jpg",
-	description: "This place in the middle of a forest is the closest you can get to the nature. Completely safe for camping."});*/
+app.use(require("express-session")({
+			secret: "Secret, I have lots of them !!",
+			resave: false,
+			saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.get("/", function(req, res){
 	res.render("landing");
@@ -99,6 +103,26 @@ app.post("/campgrounds/:id/comments", function(req, res){
 			});
 		}
 	});
+});
+
+app.get("/register", function(req, res){
+		res.render("register");
+});
+
+app.post("/register", function(req, res){
+		var newUser = new User({username: req.body.username});
+		User.register(newUser, req.body.password, function(err, user){
+				if(err){
+					console.log(err);
+					return res.render("register");
+				}
+				else{
+					passport.authenticate("local")(req, res, function(){
+							res.redirect("/campgrounds");
+					});
+				}
+		});
+
 });
 
 app.listen(3000, function(){
