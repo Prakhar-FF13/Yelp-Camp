@@ -17,6 +17,7 @@
             <h4><a><%= campground.name %></a></h4>
             <p><%= campground.description %></p>
             <p><em> Submmited By <%= campground.author.username %> </em></p>
+            <a href="/campgrounds/<%= campground._id %>/edit" class="btn btn-warning">Edit</a>
         </figcaption>
       </figure>
       <div class="card">
