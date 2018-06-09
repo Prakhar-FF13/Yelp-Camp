@@ -99,7 +99,7 @@ function checkCampgroundOwnership(req, res, next){
 				}
 				else{
 						if(foundCampground.author.id.equals(req.user._id)){
-								res.render("edit", {campground: foundCampground});
+								next();
 						}else{
 								res.send("you dont have permission to do that");
 						}

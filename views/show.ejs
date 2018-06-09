@@ -38,6 +38,11 @@
               <strong><%= comment.author.username %></strong>
               <span class="float-right">10 days ago</span>
               <p><%= comment.text %></p>
+              <a class="btn btn-sm btn-warning"
+               href="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/edit">Edit</a>
+              <form class="deletecomment" action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=DELETE" method="post">
+                  <input type="submit" class="btn btn-sm btn-danger" value="Delete">
+              </form>
             </div>
           </div>
           <% }); %>
