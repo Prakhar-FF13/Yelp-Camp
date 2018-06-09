@@ -10,3 +10,7 @@
 .figure-caption {
   padding:9px;
 }
+
+#deleteform {
+  display:inline;
+}
