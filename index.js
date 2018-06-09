@@ -12,7 +12,7 @@ Comment        = require("./models/comment");
 var commentRoutes    = require("./routes/comments"),
 		campgroundRoutes = require("./routes/campgrounds"),
 		authRoutes       = require("./routes/auth");
-seedDB();
+//seedDB();
 
 mongoose.connect("mongodb://localhost/yelp_camp");
 app.use(bodyParser.urlencoded({extended: true}));
