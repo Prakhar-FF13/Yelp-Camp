@@ -101,7 +101,7 @@ function checkCampgroundOwnership(req, res, next){
 						if(foundCampground.author.id.equals(req.user._id)){
 								next();
 						}else{
-								res.send("you dont have permission to do that");
+								res.redirect("back");
 						}
 				}
 		});
